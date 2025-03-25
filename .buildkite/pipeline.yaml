@@ -2,6 +2,9 @@ env:
   BUILDKITE_PLUGINS_ALWAYS_CLONE_FRESH: true
 
 steps:
+  - label: ":java:"
+    command: which java
+  - wait: ~
   - label: ":bazel: Test the things"
     command: bazel test //... --build_event_json_file build-events.json && ls -alh
     plugins:
