@@ -1,11 +1,10 @@
 env:
   BUILDKITE_PLUGINS_ALWAYS_CLONE_FRESH: true
-  JAVA_HOME: "/usr/bin/java"
 
 steps:
   - label: ":bazel: Test the things"
     command: |
-      bazel test //... --build_event_json_file build-events.json; EXIT_CODE=$?
+      bazel test //... --java_runtime_version=remotejdk_11 --build_event_json_file=build-events.json; EXIT_CODE=$?
       
       echo "==== Debugging information ===="
       echo "Bazel exit code: $EXIT_CODE"
@@ -20,4 +19,5 @@ steps:
       exit $EXIT_CODE
     plugins:
       - https://github.com/mcncl/bazel-annotate-buildkite-plugin.git:
-          bep_file: bazel-events.json
+          bep_file: build-events.json
+          skip_if_no_bep: true
