@@ -4,7 +4,20 @@ env:
 
 steps:
   - label: ":bazel: Test the things"
-    command: bazel test //... --java_runtime_version=remotejdk_11 --build_event_json_file build-events.json && ls -alh
+    command: |
+      bazel test //... --build_event_json_file build-events.json; EXIT_CODE=$?
+      
+      echo "==== Debugging information ===="
+      echo "Bazel exit code: $EXIT_CODE"
+      echo "Current directory: $PWD"
+      echo "Files in current directory:"
+      ls -alh
+      
+      echo "Looking for BEP file:"
+      find . -name "build-events.json" -o -name "*.json" | grep -i event || echo "No matching files found"
+      
+      # Pass along the original exit code
+      exit $EXIT_CODE
     plugins:
       - https://github.com/mcncl/bazel-annotate-buildkite-plugin.git:
           bep_file: bazel-events.json
