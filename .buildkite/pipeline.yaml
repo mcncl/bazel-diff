@@ -1,32 +1,13 @@
 env:
   BUILDKITE_PLUGINS_ALWAYS_CLONE_FRESH: true
+  BEP_FILE: "$$PWD/build-events.json"
 
 steps:
   - label: ":bazel: Test the things"
     command: |
-      # Explicitly set and show the BEP file path
-      BEP_FILE="$PWD/build-events.json"
-      echo "Using BEP file at: $BEP_FILE"
-      
       # Run Bazel with the absolute path
-      bazel test //... --java_runtime_version=remotejdk_11 "--build_event_json_file=$BEP_FILE"; EXIT_CODE=$?
-      
-      echo "==== Debugging information ===="
-      echo "Bazel exit code: $EXIT_CODE"
-      echo "Current directory: $PWD"
-      
-      echo "Looking for BEP file (absolute path): $BEP_FILE"
-      ls -alh "$BEP_FILE" 2>/dev/null || echo "BEP file not found at absolute path"
-      
-      echo "Looking for BEP file (relative path): build-events.json"
-      ls -alh build-events.json 2>/dev/null || echo "BEP file not found at relative path"
-      
-      echo "All JSON files in current directory and subdirectories:"
-      find . -name "*.json" -type f -exec ls -lh {} \;
-      
-      # Pass along the original exit code
-      exit $EXIT_CODE
+      bazel test //... --java_runtime_version=remotejdk_11 "--build_event_json_file=$$BEP_FILE"
     plugins:
       - https://github.com/mcncl/bazel-annotate-buildkite-plugin.git:
-          bep_file: "$PWD/build-events.json"
+          bep_file: "$$PWD/build-events.json"
           skip_if_no_bep: true
