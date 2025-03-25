@@ -1,13 +1,13 @@
 env:
   BUILDKITE_PLUGINS_ALWAYS_CLONE_FRESH: true
-  BEP_FILE: "$$PWD/build-events.json"
+  BEP_FILE: "build-events.json"
 
 steps:
   - label: ":bazel: Test the things"
     command: |
       # Run Bazel with the absolute path
-      bazel test //... --java_runtime_version=remotejdk_11 "--build_event_json_file=$$BEP_FILE"
+      bazel test //... --java_runtime_version=remotejdk_11 "--build_event_json_file=$BEP_FILE"
     plugins:
       - https://github.com/mcncl/bazel-annotate-buildkite-plugin.git:
-          bep_file: "$$PWD/build-events.json"
+          bep_file: "$BEP_FILE"
           skip_if_no_bep: true
