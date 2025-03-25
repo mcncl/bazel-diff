@@ -3,7 +3,7 @@ env:
 
 steps:
   - label: ":java:"
-    command: which java
+    command: which java && echo $JAVA_HOME
   - wait: ~
   - label: ":bazel: Test the things"
     command: bazel test //... --build_event_json_file build-events.json && ls -alh
