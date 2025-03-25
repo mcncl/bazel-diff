@@ -1,5 +1,6 @@
 env:
   BUILDKITE_PLUGINS_ALWAYS_CLONE_FRESH: true
+  JAVA_HOME: "/usr/bin/java"
 
 steps:
   - label: ":java:"
