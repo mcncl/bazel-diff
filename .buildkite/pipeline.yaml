@@ -5,5 +5,5 @@ steps:
   - label: ":bazel: Test the things"
     command: bazel test //... --build_event_json_file build-events.json
     plugins:
-      - ssh://git@github.com/mcncl/bazel-annotate.git#v0.0.1:
+      - https://github.com/mcncl/bazel-annotate.git#v0.0.1:
           bep_file: bazel-events.json
